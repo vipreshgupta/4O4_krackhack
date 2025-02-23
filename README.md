@@ -15,7 +15,7 @@ This project is an autonomous website generator that processes user input, enhan
 ### 1. Clone the Repository
 ```sh
 git clone https://github.com/vipreshgupta/4O4_krackhack.git
-cd 404_krackhack
+cd 4O4_krackhack
 ```
 
 ### 2. Install Dependencies
