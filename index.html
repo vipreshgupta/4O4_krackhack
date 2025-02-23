@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pacifico&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glass-effect {
+            background: rgba(37, 37, 37, 0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        .history-card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .history-card:hover {
+        transform: scale(1.1);
+        white-space: normal;
+        overflow: visible;
+        box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+        z-index: 10;
+        position: relative;
+    }
+
+        .voice-btn {
+            box-shadow: 0 0 15px rgba(123, 47, 255, 0.3);
+        }
+
+        .voice-btn:hover {
+            box-shadow: 0 0 20px rgba(123, 47, 255, 0.5);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7B2FFF',
+                        secondary: '#252525',
+                        dark: {
+                            100: '#2D2D2D',
+                            200: '#1E1E1E',
+                            300: '#121212'
+                        }
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-dark-300 text-white min-h-screen">
+    <nav class="sticky top-0 left-0 right-0 z-50 glass-effect" id="navbar">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="./index.html" class="text-2xl font-['Pacifico'] text-primary">404!</a>
+                <div class="flex items-center space-x-8">
+                    <a href="javascript:void(0)" onclick="scrollToTop()"
+                        class="hover:text-primary transition-colors">Home</a>
+                    <a href="javascript:void(0)" onclick="scrollToAbout()"
+                        class="hover:text-primary transition-colors">About Us</a>
+                    <button id="loginBtn"
+                        class="px-6 py-2 bg-primary hover:bg-primary/90 rounded-button transition-colors">Login</button>
+                </div>
+            </div>
+            <script>
+                function scrollToTop() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+                function scrollToAbout() {
+                    const aboutSection = document.getElementById('about');
+                    aboutSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            </script>
+        </div>
+    </nav>
+    <main class="container mx-auto px-6 pt-24 pb-12">
+        <div class="max-w-3xl mx-auto text-center">
+            <h1 class="text-4xl font-bold mb-4">Hi User,</h1>
+            <p id="quote" class="text-lg text-gray-400 italic mb-12"></p>
+            <div class="bg-secondary rounded-lg p-6 mb-8">
+                <div class="flex items-center justify-center mb-4">
+                    <input type="text" id="websitePrompt" placeholder="Describe the website you want to build..."
+                        class="w-full max-w-2xl bg-dark-100 text-white px-4 py-3 rounded border-none focus:ring-2 focus:ring-primary outline-none">
+                    <button
+                        class="voice-btn ml-4 w-12 h-12 bg-primary rounded-full flex items-center justify-center hover:bg-primary/90 transition-all"
+                        id="voiceSearch">
+                        <i class="ri-mic-line text-xl"></i>
+                    </button>
+                </div>
+                <button id="generateBtn"
+                    class="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-button transition-colors">Generate
+                    Website</button>
+            </div>
+            <div class="mb-12">
+                <h2 class="text-2xl font-semibold mb-6">History</h2>
+                <div class="space-y-4" id="historyContainer">
+                </div>
+            </div>
+        </div>
+    </main>
+    <section id="about" class="container mx-auto px-6 py-24">
+        <h2 class="text-4xl font-bold text-center mb-16">Our Team</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Team Member 1 -->
+            <div class="bg-secondary rounded-lg p-6 text-center">
+                <div class="w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden">
+                    <img src="./images/Manan3.jpg"
+                        class="w-full h-full object-cover" alt="Manan Sahni">
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Manan Sahni</h3>
+                <p class="text-gray-400 mb-4">UI/UX Developer</p>
+                <div class="flex justify-center space-x-4 mb-4">
+                    <a href="mailto:manansahni67@gmail.com"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-mail-line"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/manan-sahni-406913342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-linkedin-fill"></i>
+                    </a>
+                    <a href="https://github.com/manan0005" target="_blank"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-github-fill"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- Team Member 2 -->
+            <div class="bg-secondary rounded-lg p-6 text-center">
+                <div class="w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden">
+                    <img src="images/Vipresh.jpg"
+                        class="w-full h-full object-cover" alt="Vipresh Gupta">
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Vipresh Gupta</h3>
+                <p class="text-gray-400 mb-4">Lead Developer</p>
+                <div class="flex justify-center space-x-4 mb-4">
+                    <a href="mailto:vipreshgupta2006@gmail.com"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-mail-line"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/vipresh-gupta" target="_blank"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-linkedin-fill"></i>
+                    </a>
+                    <a href="https://github.com/vipreshgupta" target="_blank"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-github-fill"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- Team Member 3 -->
+            <div class="bg-secondary rounded-lg p-6 text-center">
+                <div class="w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden">
+                    <img src="./images/Pushkar.jpg"
+                        class="w-full h-full object-cover" alt="Pushkar Raj">
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Pushkar Raj</h3>
+                <p class="text-gray-400 mb-4">Product Manager</p>
+                <div class="flex justify-center space-x-4 mb-4">
+                    <a href="mailto:pushkarraj6350@gmail.com"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-mail-line"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/pushkar-raj-062817323?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-linkedin-fill"></i>
+                    </a>
+                    <a href="https://github.com/IRONOK0811" target="_blank"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-github-fill"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- Team Member 4 -->
+            <div class="bg-secondary rounded-lg p-6 text-center">
+                <div class="w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden">
+                    <img src="images/Raghav1.jpg"
+                        class="w-full h-full object-cover" alt="Raghav Bansal">
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Raghav Bansal</h3>
+                <p class="text-gray-400 mb-4">Frontend Developer</p>
+                <div class="flex justify-center space-x-4 mb-4">
+                    <a href="mailto:raghavb0102@gmail.com"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-mail-line"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/raghav-bansal-46b395323?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app " target="_blank"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-linkedin-fill"></i>
+                    </a>
+                    <a href="https://github.com/TheRaghav-tech" target="_blank"
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-dark-100 hover:bg-primary transition-colors">
+                        <i class="ri-github-fill"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="loginModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50"
+        style="display: none;">
+        <div
+            class="bg-secondary rounded-lg p-8 w-full max-w-md fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Login</h2>
+                <button id="closeLoginBtn" class="text-gray-400 hover:text-white">
+                    <i class="ri-close-line text-2xl"></i>
+                </button>
+            </div>
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label class="block mb-2">Email</label>
+                    <input type="email"
+                        class="w-full bg-dark-100 text-white px-4 py-3 rounded border-none focus:ring-2 focus:ring-primary outline-none"
+                        required>
+                </div>
+                <div>
+                    <label class="block mb-2">Password</label>
+                    <input type="password"
+                        class="w-full bg-dark-100 text-white px-4 py-3 rounded border-none focus:ring-2 focus:ring-primary outline-none"
+                        required>
+                </div>
+                <button type="submit"
+                    class="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-button transition-colors">Login</button>
+            </form>
+        </div>
+    </div>
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center hidden z-50">
+            <div class="text-center">
+                <div class="loader ease-linear rounded-full border-4 border-t-4 border-primary h-12 w-12 mb-4 animate-spin">
+                </div>
+                <p class="text-white text-lg">Generating your website...</p>
+            </div>
+        </div>
+    
+        <style>
+            .loader {
+                border-top-color: transparent;
+            }
+        </style>
+    <script>
+        const quotes = [
+            {
+                text: "Creativity is intelligence having fun",
+                author: "Albert Einstein"
+            },
+            {
+                text: "Design is not just what it looks like and feels like. Design is how it works",
+                author: "Steve Jobs"
+            },
+            {
+                text: "Simplicity is the ultimate sophistication",
+                author: "Leonardo da Vinci"
+            },
+            {
+                text: "Good design is obvious. Great design is transparent",
+                author: "Joe Sparano"
+            },
+            {
+                text: "Innovation distinguishes between a leader and a follower",
+                author: "Steve Jobs"
+            },
+            {
+                text: "Design creates culture. Culture shapes values. Values determine the future",
+                author: "Robert L. Peters"
+            }
+        ];
+        const mockHistory = [
+           {
+                prompt: "Create a website for a online retail shoe store situated in delhi include all varieties the site should sell all sizes and include an add to cart option in the catalogue and it should also have a cart system. A section for customer reviews for both recieved and post reviews should be there. Include Dark theme toggle button",
+                timestamp: "2025-02-22 17:15",
+                status: "Completed",
+                deployedUrl:"https://vipreshgupta.github.io/generated-site-1740329727/"
+            },
+            {
+                prompt: "I want to create a website for NGO that helps needy people add a contact section and add some more sections that contains pictures of helping people",
+                timestamp: "2025-02-22 18:30",
+                status: "Completed",
+                deployedUrl:"https://vipreshgupta.github.io/generated-site-1740317179/"
+            },
+            {
+                prompt: "Create a website named oh sahbji which will sell momos of various categories with 50 uniques sauces add categories like steamed, fried etc also include cart in this website .Do include dark and light theme toggle button.",
+                timestamp: "2025-02-22 16:00",
+                status: "Completed",
+                deployedUrl: "https://vipreshgupta.github.io/generated-site-1740306022/#"
+
+            }
+        ];
+        function renderHistory() {
+            const container = document.getElementById('historyContainer');
+            container.innerHTML = mockHistory.map(item => `
+                <div class="history-card bg-secondary p-4 rounded-lg hover:bg-dark-100 transition-all">
+                    <p class="font-medium break-words">${item.prompt}</p>
+                    <p class="text-sm text-gray-400">${item.timestamp}</p>
+                    <p class="text-sm text-green-400">${item.status}</p>
+                    ${item.deployedUrl ? `<a href="${item.deployedUrl}" target="_blank" class="text-primary hover:underline">View Deployed Website</a>` : ""}
+                </div>
+            `).join('');
+        }
+
+        // Add required styles to head
+        const style = document.createElement('style');
+        style.textContent = `
+.backface-hidden {
+backface-visibility: hidden;
+-webkit-backface-visibility: hidden;
+}
+.history-card {
+    min-height: 150px; /* Ensures a minimum height */
+    max-width: 100%;
+    word-wrap: break-word;
+    white-space: normal; /* Allows text to wrap */
+}
+.front, .back {
+top: 0;
+left: 0;
+padding: 1rem;
+}
+`;
+        document.head.appendChild(style);
+        document.addEventListener('DOMContentLoaded', () => {
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quote').innerHTML = `"${randomQuote.text}"<br><span class="text-sm">- ${randomQuote.author}</span>`;
+            renderHistory();
+            const loginBtn = document.getElementById('loginBtn');
+            const loginModal = document.getElementById('loginModal');
+            const closeLoginBtn = document.getElementById('closeLoginBtn');
+            const loginForm = document.getElementById('loginForm');
+            loginBtn.addEventListener('click', () => {
+                loginModal.style.display = 'block';
+            });
+            closeLoginBtn.addEventListener('click', () => {
+                loginModal.style.display = 'none';
+            });
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                loginModal.style.display = 'none';
+            });
+            const voiceBtn = document.querySelector('.voice-btn');
+            let isRecording = false;
+            voiceBtn.addEventListener('click', () => {
+                isRecording = !isRecording;
+                voiceBtn.querySelector('i').className = isRecording ? 'ri-mic-fill' : 'ri-mic-line';
+                voiceBtn.classList.toggle('bg-red-500');
+            });
+            document.getElementById('generateBtn').addEventListener('click', () => {
+                const prompt = document.getElementById('websitePrompt').value;
+                if (prompt) {
+                    mockHistory.unshift({
+                        prompt,
+                        timestamp: new Date().toLocaleString(),
+                        status: "Generation Started"
+                    });
+                    renderHistory();
+                    document.getElementById('websitePrompt').value = '';
+                }
+            });
+        });
+    </script>
+
+<script>
+    function renderHistory() {
+        const container = document.getElementById('historyContainer');
+        container.innerHTML = mockHistory.map(item => `
+            <div class="history-card bg-secondary p-4 rounded-lg hover:bg-dark-100 transition-all">
+                <p class="font-medium break-words">${item.prompt}</p>
+                <p class="text-sm text-gray-400">${item.timestamp}</p>
+                <p class="text-sm text-green-400">${item.status}</p>
+                ${item.deployedUrl ? `<a href="${item.deployedUrl}" target="_blank" class="text-primary hover:underline">View Deployed Website</a>` : ""}
+            </div>
+        `).join('');
+    }
+
+
+    document.getElementById('generateBtn').addEventListener('click', async () => {
+        const prompt = document.getElementById('websitePrompt').value;
+        if (!prompt) {
+            alert("Please enter a website description.");
+            return;
+        }
+
+        // Show loading overlay and set caption to "Generating..."
+        const loadingText = document.querySelector("#loadingOverlay p");
+        loadingText.textContent = "Generating your website...";
+        document.getElementById("loadingOverlay").classList.remove("hidden");
+
+        try {
+            // Send the prompt to backend
+            const response = await fetch("http://127.0.0.1:5000/generate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ prompt })
+            });
+
+            const result = await response.json();
+
+            if (result.output) {
+                // After 10 seconds, change "Generating..." to "Loading..."
+                setTimeout(() => {
+                    loadingText.textContent = "Loading your website...";
+                }, 10000); // 10 seconds
+
+                // After 50 seconds, show the link and update history
+                setTimeout(() => {
+                    document.getElementById("loadingOverlay").classList.add("hidden"); // Hide loading screen
+                    alert("Website Generated! URL: " + result.output);
+
+                    // Store the result in history
+                    mockHistory.unshift({
+                        prompt,
+                        timestamp: new Date().toLocaleString(),
+                        status: "Completed",
+                        deployedUrl: result.output
+                    });
+                    renderHistory(); // Refresh history list
+                }, 50000); // 50 seconds
+
+            } else {
+                throw new Error(result.error || "Unknown error occurred.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed to connect to the server.");
+            document.getElementById("loadingOverlay").classList.add("hidden"); // Hide loading screen on error
+        }
+    });
+
+
+
+</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const voiceBtn = document.getElementById('voiceSearch');
+            const inputField = document.getElementById('websitePrompt');
+
+            if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+
+                voiceBtn.addEventListener('click', () => {
+                    recognition.start();
+                    voiceBtn.classList.add('bg-red-500');
+                    voiceBtn.querySelector('i').classList.replace('ri-mic-line', 'ri-mic-fill');
+                });
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    inputField.value = transcript;
+                    voiceBtn.classList.remove('bg-red-500');
+                    voiceBtn.querySelector('i').classList.replace('ri-mic-fill', 'ri-mic-line');
+                };
+
+                recognition.onerror = () => {
+                    voiceBtn.classList.remove('bg-red-500');
+                    voiceBtn.querySelector('i').classList.replace('ri-mic-fill', 'ri-mic-line');
+                    alert("Error occurred while capturing voice. Please try again.");
+                };
+
+                recognition.onend = () => {
+                    voiceBtn.classList.remove('bg-red-500');
+                    voiceBtn.querySelector('i').classList.replace('ri-mic-fill', 'ri-mic-line');
+                };
+            } else {
+                voiceBtn.disabled = true;
+                voiceBtn.title = "Voice search is not supported in this browser.";
+            }
+        });
+    </script>
+    <script>
+        function renderHistory() {
+            const container = document.getElementById('historyContainer');
+            container.innerHTML = mockHistory.map(item => `
+                <div class="history-card bg-secondary p-4 rounded-lg hover:bg-dark-100 transition-all">
+                    <p class="font-medium">${item.prompt}</p>
+                    <p class="text-sm text-gray-400">${item.timestamp}</p>
+                    <p class="text-sm text-green-400">${item.status}</p>
+                    ${item.deployedUrl ? `<a href="${item.deployedUrl}" target="_blank" class="text-primary hover:underline">View Deployed Website</a>` : ""}
+                </div>
+            `).join('');
+        }
+    </script>
+
+</body>
+
+</html>
