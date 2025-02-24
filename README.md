@@ -53,7 +53,16 @@ This project requires API keys stored in a `.env` file.
 
 ⚠️ **Important:** Never share this file or push it to GitHub.
 
-### 4. Run the Project
+### **4. Modify GitHub Username**
+After generating the GitHub API key, open the `main.py` file and locate the `GITHUB_USERNAME` variable. Update it with your GitHub username to ensure that the generated website is uploaded to your GitHub repository.
+
+#### **In `main.py`**
+```python
+GITHUB_USERNAME= 'your_github_username'
+```
+Replace 'your_github_username' with your actual GitHub username.
+
+### 5. Run the Project
 Since the project requires running `main.py` first, then `BackendConnection.py`, follow these steps:
 
 #### **For Windows**
@@ -92,7 +101,7 @@ Alternatively, create and use a script:
   ./run.sh
   ```
 
-### 5. Open the Frontend
+### 6. Open the Frontend
 Once the backend scripts are running, open `index.html` in a web browser to access the website.
 
 ## File Structure
