@@ -45,7 +45,7 @@ def process_input():
         "instructions": "Make this user input '"+user_input+ "' into a detailed prompt for AI. \
         The output should guide AI to generate an attractive and user-friendly website. \
         Include UI/UX enhancements: "+ui_ux_suggestions +". Use <img> tags with image URLs from sources\
-        like unsplash.com or freepik.com to enhance the website visuals.\
+        like  https://unsplash.com or https://freepik.com or https://picsum.photos/  to enhance the website visuals.\
         Ensure HTML, CSS, and JS are in one file."
     }
     response_1 = requests.post(url_1, json=payload_1, headers=AGENT_API_HEADERS)
